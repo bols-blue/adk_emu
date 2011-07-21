@@ -3,6 +3,7 @@
 
 int main (int argc, char *argv[])
 {
+	init();
 	if(open_accesory_dev() < 0)
 		return 0;
 	fprintf(stdout, "Start setting up accessory\n");

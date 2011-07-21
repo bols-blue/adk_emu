@@ -27,7 +27,13 @@ static void status(int code);
 static usb_dev_handle* handle;
 static char stop;
 static char success = 0;
-int open_accesory_dev()
+int open_accesory_dev(){
+ if(open_accesory_dev_from_id(VID,PID) == 0){return 0;}
+ if(open_accesory_dev_from_id(GOOGLE_VID,PID) == 0){return 0;}
+	return -1;
+}
+
+int open_accesory_dev_from_id(int vid,int pid)
 {
 	struct usb_bus *bus;
 	struct usb_device *dev;
@@ -37,26 +43,26 @@ int open_accesory_dev()
 		for (dev = bus->devices; dev; dev = dev->next)
 		{	
 			struct usb_device_descriptor desc = dev->descriptor;
-			printf("%04x:%04x \n",desc.idVendor, desc.idProduct);
-			if(desc.idVendor == VID && desc.idProduct == PID){
+			if(desc.idVendor == vid && desc.idProduct == pid){
 				handle = usb_open(dev);
 				return 0;
-			}else if(desc.idVendor == GOOGLE_VID && desc.idProduct == PID){
+			}else if(desc.idVendor == GOOGLE_VID && desc.idProduct == pid){
 				handle = usb_open(dev);
 				return 0;
 			}
 		}
-		return -1;
 	}
+	return -1;
 }
 
 void print_devs()
 {
 	struct usb_bus *bus;
 	struct usb_device *dev;
-
+	int i=0;
 	for (bus = usb_get_busses(); bus; bus = bus->next)
 	{
+		printf("bus_num \n",i++);
 		for (dev = bus->devices; dev; dev = dev->next)
 		{
 			struct usb_device_descriptor desc = dev->descriptor;
@@ -68,6 +74,8 @@ void print_devs()
 int init()
 {
 	usb_init();
+	usb_find_busses();
+	usb_find_devices();
 	return 0;
 }
 
@@ -112,6 +120,20 @@ int chAccessoryMode(
 	response = usb_control_msg(handle,0x40,53,0,0,NULL,0,0);
 	if(response < 0){return -1;}
 
+	for(;;){//attempt to connect to new PID, if that doesn't work try ACCESSORY_PID_ALT
+		tries--;
+		if(open_accesory_dev_from_id(GOOGLE_VID,ACCESSORY_PID) == 0){
+			break;
+		}else if(open_accesory_dev_from_id(GOOGLE_VID,ACCESSORY_PID_ALT) == 0){
+			break;
+		}else{
+			if(tries < 0){
+				usb_claim_interface(handle, 0);
+				return -1;
+			}
+		}
+		usleep(1000000);
+	}
 
 	if(handle != NULL){
 		usb_release_interface (handle, 0);

@@ -27,7 +27,7 @@
 int main(void)
 {
 
-	usb_init();
+	init();
 	print_devs();
 
 	return 0;

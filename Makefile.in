@@ -32,8 +32,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = InitAccessoryMode$(EXEEXT) AccessoryDataCom$(EXEEXT) \
-	lsusb$(EXEEXT)
+bin_PROGRAMS = init_accessory_mode$(EXEEXT) \
+	accessory_data_com$(EXEEXT) lsusb$(EXEEXT)
 subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
@@ -51,14 +51,13 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_AccessoryDataCom_OBJECTS = libusb_adk.$(OBJEXT) \
+accessory_data_com_SOURCES = accessory_data_com.c
+accessory_data_com_OBJECTS = accessory_data_com.$(OBJEXT)
+accessory_data_com_LDADD = $(LDADD)
+am_init_accessory_mode_OBJECTS = libusb_adk.$(OBJEXT) \
 	InitAccessoryMode.$(OBJEXT)
-AccessoryDataCom_OBJECTS = $(am_AccessoryDataCom_OBJECTS)
-AccessoryDataCom_LDADD = $(LDADD)
-am_InitAccessoryMode_OBJECTS = libusb_adk.$(OBJEXT) \
-	InitAccessoryMode.$(OBJEXT)
-InitAccessoryMode_OBJECTS = $(am_InitAccessoryMode_OBJECTS)
-InitAccessoryMode_LDADD = $(LDADD)
+init_accessory_mode_OBJECTS = $(am_init_accessory_mode_OBJECTS)
+init_accessory_mode_LDADD = $(LDADD)
 am_lsusb_OBJECTS = lsusb.$(OBJEXT) libusb_adk.$(OBJEXT)
 lsusb_OBJECTS = $(am_lsusb_OBJECTS)
 lsusb_LDADD = $(LDADD)
@@ -70,10 +69,10 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(AccessoryDataCom_SOURCES) $(InitAccessoryMode_SOURCES) \
+SOURCES = accessory_data_com.c $(init_accessory_mode_SOURCES) \
 	$(lsusb_SOURCES)
-DIST_SOURCES = $(AccessoryDataCom_SOURCES) \
-	$(InitAccessoryMode_SOURCES) $(lsusb_SOURCES)
+DIST_SOURCES = accessory_data_com.c $(init_accessory_mode_SOURCES) \
+	$(lsusb_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -181,7 +180,7 @@ top_srcdir = @top_srcdir@
 #libtest_LIBRARIES is libtest package define
 #libtest_a_SOURCES is libtest package source files
 #test_SOURCES= is test package sourcefiles
-InitAccessoryMode_SOURCES = libusb_adk.c InitAccessoryMode.c
+init_accessory_mode_SOURCES = libusb_adk.c InitAccessoryMode.c
 lsusb_SOURCES = lsusb.c libusb_adk.c libusb_adk.h
 #nodist_lsusb_HEADERS=libusb_adk.h
 AccessoryDataCom_SOURCES = libusb_adk.c InitAccessoryMode.c
@@ -279,12 +278,12 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
-AccessoryDataCom$(EXEEXT): $(AccessoryDataCom_OBJECTS) $(AccessoryDataCom_DEPENDENCIES) 
-	@rm -f AccessoryDataCom$(EXEEXT)
-	$(LINK) $(AccessoryDataCom_OBJECTS) $(AccessoryDataCom_LDADD) $(LIBS)
-InitAccessoryMode$(EXEEXT): $(InitAccessoryMode_OBJECTS) $(InitAccessoryMode_DEPENDENCIES) 
-	@rm -f InitAccessoryMode$(EXEEXT)
-	$(LINK) $(InitAccessoryMode_OBJECTS) $(InitAccessoryMode_LDADD) $(LIBS)
+accessory_data_com$(EXEEXT): $(accessory_data_com_OBJECTS) $(accessory_data_com_DEPENDENCIES) 
+	@rm -f accessory_data_com$(EXEEXT)
+	$(LINK) $(accessory_data_com_OBJECTS) $(accessory_data_com_LDADD) $(LIBS)
+init_accessory_mode$(EXEEXT): $(init_accessory_mode_OBJECTS) $(init_accessory_mode_DEPENDENCIES) 
+	@rm -f init_accessory_mode$(EXEEXT)
+	$(LINK) $(init_accessory_mode_OBJECTS) $(init_accessory_mode_LDADD) $(LIBS)
 lsusb$(EXEEXT): $(lsusb_OBJECTS) $(lsusb_DEPENDENCIES) 
 	@rm -f lsusb$(EXEEXT)
 	$(LINK) $(lsusb_OBJECTS) $(lsusb_LDADD) $(LIBS)
@@ -296,6 +295,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InitAccessoryMode.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/accessory_data_com.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libusb_adk.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lsusb.Po@am__quote@
 
