@@ -31,9 +31,9 @@ if test "$vi_cannapath" != "yes"; then
 	LDFLAGS="-L$vi_cannapath/lib $LDFLAGS"
 fi
 
-
 # Checks for libraries.
 AC_CHECK_LIB(usb,usb_control_msg )
+AC_SEARCH_LIBS(usb_control_msg,libusb usb usb-1.0 libusb-1.0)
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdint.h stdlib.h string.h unistd.h])

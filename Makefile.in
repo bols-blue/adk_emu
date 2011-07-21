@@ -51,11 +51,12 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-accessory_data_com_SOURCES = accessory_data_com.c
-accessory_data_com_OBJECTS = accessory_data_com.$(OBJEXT)
+am_accessory_data_com_OBJECTS = libusb_adk.$(OBJEXT) \
+	init_accessory_mode.$(OBJEXT)
+accessory_data_com_OBJECTS = $(am_accessory_data_com_OBJECTS)
 accessory_data_com_LDADD = $(LDADD)
 am_init_accessory_mode_OBJECTS = libusb_adk.$(OBJEXT) \
-	InitAccessoryMode.$(OBJEXT)
+	init_accessory_mode.$(OBJEXT)
 init_accessory_mode_OBJECTS = $(am_init_accessory_mode_OBJECTS)
 init_accessory_mode_LDADD = $(LDADD)
 am_lsusb_OBJECTS = lsusb.$(OBJEXT) libusb_adk.$(OBJEXT)
@@ -69,10 +70,10 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = accessory_data_com.c $(init_accessory_mode_SOURCES) \
+SOURCES = $(accessory_data_com_SOURCES) $(init_accessory_mode_SOURCES) \
 	$(lsusb_SOURCES)
-DIST_SOURCES = accessory_data_com.c $(init_accessory_mode_SOURCES) \
-	$(lsusb_SOURCES)
+DIST_SOURCES = $(accessory_data_com_SOURCES) \
+	$(init_accessory_mode_SOURCES) $(lsusb_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -180,10 +181,10 @@ top_srcdir = @top_srcdir@
 #libtest_LIBRARIES is libtest package define
 #libtest_a_SOURCES is libtest package source files
 #test_SOURCES= is test package sourcefiles
-init_accessory_mode_SOURCES = libusb_adk.c InitAccessoryMode.c
+init_accessory_mode_SOURCES = libusb_adk.c init_accessory_mode.c
 lsusb_SOURCES = lsusb.c libusb_adk.c libusb_adk.h
 #nodist_lsusb_HEADERS=libusb_adk.h
-AccessoryDataCom_SOURCES = libusb_adk.c InitAccessoryMode.c
+accessory_data_com_SOURCES = libusb_adk.c init_accessory_mode.c
 InitAccessoryMode_LDFULGS = -static-libgcc -static-libusb-1.0
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -294,8 +295,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/InitAccessoryMode.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/accessory_data_com.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/init_accessory_mode.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libusb_adk.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lsusb.Po@am__quote@
 
