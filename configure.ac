@@ -13,8 +13,7 @@ AC_CHECK_TOOL([RANLIB], [ranlib], [:])
 AC_PROG_CC
 
 # Checks for libraries.
-AC_CHECK_LIB(usb,libusb_release_interface )
-AC_CHECK_LIB(usb-1.0,libusb_release_interface )
+AC_CHECK_LIB(usb,usb_control_msg )
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdint.h stdlib.h string.h unistd.h])
@@ -84,18 +83,18 @@ fi
 #	exit 1
 #fi
 
-AC_SEARCH_LIBS(usb_control_msg,libusb usb usb-1.0 libusb-1.0,
-	     [vi_cv_cannalibcheck="yes"], [vi_cv_cannalibcheck="no"])
-if test "$vi_cv_cannalibcheck" = "no"; then
-	echo "Fatal error: no usb library in suggested path"
-	if test "$vi_cannapath" != "yes"; then
-		echo ", $vi_cannapath/lib."
-		echo "$hostname:$ac_hostname:$host"
-	else
-		echo "."
-	fi
-	exit 1
-fi
+#AC_SEARCH_LIBS(usb_control_msg,libusb usb usb-1.0 libusb-1.0,
+#	     [vi_cv_cannalibcheck="yes"], [vi_cv_cannalibcheck="no"])
+#if test "$vi_cv_cannalibcheck" = "no"; then
+#	echo "Fatal error: no usb library in suggested path"
+#	if test "$vi_cannapath" != "yes"; then
+#		echo ", $vi_cannapath/lib."
+#		echo "$hostname:$ac_hostname:$host"
+#	else
+#		echo "."
+#	fi
+#	exit 1
+#fi
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
