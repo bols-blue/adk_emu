@@ -21,11 +21,6 @@ int main (int argc, char *argv[])
 	};
 	fprintf(stdout, "end setup\n");
 
-	if(mainPhase() < 0){
-		fprintf(stdout, "Error during main phase\n");
-		closeHandle();
-		return -1;
-	}	
 	closeHandle();
 	fprintf(stdout, "Done, no errors\n");
 	return 0;

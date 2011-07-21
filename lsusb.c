@@ -20,28 +20,16 @@
 #include <stdio.h>
 #include <sys/types.h>
 
-#include <libusb.h>
+#include <usb.h>
 #include "libusb_adk.h"
 
 
 int main(void)
 {
-	libusb_device **devs;
-	int r;
-	ssize_t cnt;
 
-	r = libusb_init(NULL);
-	if (r < 0)
-		return r;
+	usb_init();
+	print_devs();
 
-	cnt = libusb_get_device_list(NULL, &devs);
-	if (cnt < 0)
-		return (int) cnt;
-
-	print_devs(devs);
-	libusb_free_device_list(devs, 1);
-
-	libusb_exit(NULL);
 	return 0;
 }
 

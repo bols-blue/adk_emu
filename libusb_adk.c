@@ -29,53 +29,52 @@ static char stop;
 static char success = 0;
 int open_accesory_dev()
 {
-  struct usb_bus *bus;
-  struct usb_device *dev;
+	struct usb_bus *bus;
+	struct usb_device *dev;
 
-    for (bus = usb_get_busses(); bus; bus = bus->next)
-    {
-        for (dev = bus->devices; dev; dev = dev->next)
-        {	
-		struct usb_device_descriptor desc = dev->descriptor;
-		printf("%04x:%04x (bus %d, device %d)\n",
-			desc.idVendor, desc.idProduct,
-			usb_get_bus_number(dev), usb_get_device_address(dev));
-		if(desc.idVendor == VID && desc.idProduct == PID){
-			handle = usb_open(dev);
-			return 0;
-		}else if(desc.idVendor == GOOGLE_VID && desc.idProduct == PID){
-			handle = usb_open(dev);
-			return 0;
+	for (bus = usb_get_busses(); bus; bus = bus->next)
+	{
+		for (dev = bus->devices; dev; dev = dev->next)
+		{	
+			struct usb_device_descriptor desc = dev->descriptor;
+			printf("%04x:%04x \n",desc.idVendor, desc.idProduct);
+			if(desc.idVendor == VID && desc.idProduct == PID){
+				handle = usb_open(dev);
+				return 0;
+			}else if(desc.idVendor == GOOGLE_VID && desc.idProduct == PID){
+				handle = usb_open(dev);
+				return 0;
+			}
 		}
+		return -1;
 	}
-	return -1;
 }
+
 void print_devs()
 {
-    struct usb_bus *bus;
-    struct usb_device *dev;
+	struct usb_bus *bus;
+	struct usb_device *dev;
 
-    for (bus = usb_get_busses(); bus; bus = bus->next)
-    {
-        for (dev = bus->devices; dev; dev = dev->next)
-        {
-		struct usb_device_descriptor desc = dev->descriptor;
-		printf("%04x:%04x (bus %d, device %d)\n",
-			desc.idVendor, desc.idProduct,
-			usb_get_bus_number(dev), usb_get_device_address(dev));
-        }
-    }
+	for (bus = usb_get_busses(); bus; bus = bus->next)
+	{
+		for (dev = bus->devices; dev; dev = dev->next)
+		{
+			struct usb_device_descriptor desc = dev->descriptor;
+			printf("%04x:%04x \n",desc.idVendor, desc.idProduct);
+		}
+	}
 }
 
-int init(){
+int init()
+{
 	usb_init();
 	return 0;
 }
 
-int closeHandle(){
+int closeHandle()
+{
 	if(handle != NULL)
 		usb_release_interface (handle, 0);
-	libusb_exit(NULL);
 	return 0;
 }
 
@@ -85,7 +84,8 @@ int chAccessoryMode(
 		const char* description,
 		const char* version,
 		const char* url,
-		const char* serialNumber){
+		const char* serialNumber)
+{
 
 	unsigned char ioBuffer[2];
 	int devVersion;
@@ -118,5 +118,4 @@ int chAccessoryMode(
 	}
 	return 0;
 }
-
 
