@@ -12,6 +12,26 @@ AC_CHECK_TOOL([RANLIB], [ranlib], [:])
 # Checks for programs.
 AC_PROG_CC
 
+dnl Some operating system include canna libraries by default.
+dnl Use that pathname by default.
+dnl for freebsd2.*, order DOES matter.  don't bother.
+case "$host" in
+	Linux-ubuntu)
+		vi_cannapath="/usr/contrib/";;
+	freebsd2.2*|freebsd3*)
+		vi_cannapath="/usr/local";;
+	freebsd2*)
+		vi_cannapath="/usr/local/canna";;
+	*)
+		vi_cannapath="/usr/libusb-1.2.4.0";;
+esac
+
+if test "$vi_cannapath" != "yes"; then
+	CFLAGS="-I$vi_cannapath/include $CFLAGS"
+	LDFLAGS="-L$vi_cannapath/lib $LDFLAGS"
+fi
+
+
 # Checks for libraries.
 AC_CHECK_LIB(usb,usb_control_msg )
 
@@ -37,25 +57,6 @@ AC_CHECK_TYPES([ptrdiff_t])
 AC_FUNC_ERROR_AT_LINE
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([memset sleep])
-
-dnl Some operating system include canna libraries by default.
-dnl Use that pathname by default.
-dnl for freebsd2.*, order DOES matter.  don't bother.
-case "$host" in
-	Linux-ubuntu)
-		vi_cannapath="/usr/contrib/";;
-	freebsd2.2*|freebsd3*)
-		vi_cannapath="/usr/local";;
-	freebsd2*)
-		vi_cannapath="/usr/local/canna";;
-	*)
-		vi_cannapath="/usr/libusb-1.2.4.0";;
-esac
-
-if test "$vi_cannapath" != "yes"; then
-	CFLAGS="-I$vi_cannapath/include $CFLAGS"
-	LDFLAGS="-L$vi_cannapath/lib $LDFLAGS"
-fi
 
 dnl we use AC_TRY_COMPILE not AC_CHECK_HEADER, to avoid unnecessery
 dnl use of CPPFLAGS. (why?)
