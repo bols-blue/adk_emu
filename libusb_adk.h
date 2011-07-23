@@ -11,6 +11,8 @@ int chAccessoryMode(
 		const char* serialNumber);
 void print_devs();
 int open_accesory_dev();
+int open_accesory_com_dev();
+int data_read();
 #if defined(__MINGW32__)
 #include <windows.h>
 #define sleep Sleep

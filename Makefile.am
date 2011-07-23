@@ -1,6 +1,6 @@
 #test is skelton code 
-bin_PROGRAMS=init_accessory_mode\
-	     accessory_data_com\
+bin_PROGRAMS=adk_init\
+	     adk_com\
 	     lsusb
 #test_CFLAGS is test package C compiler option
 #test_CXXFLAGS is test package C++ compiler option
@@ -9,8 +9,8 @@ bin_PROGRAMS=init_accessory_mode\
 #libtest_LIBRARIES is libtest package define
 #libtest_a_SOURCES is libtest package source files
 #test_SOURCES= is test package sourcefiles
-init_accessory_mode_SOURCES=libusb_adk.c init_accessory_mode.c
+adk_init_SOURCES=libusb_adk.c adk_init.c
 lsusb_SOURCES=lsusb.c libusb_adk.c libusb_adk.h
 #nodist_lsusb_HEADERS=libusb_adk.h
-accessory_data_com_SOURCES=libusb_adk.c init_accessory_mode.c
+adk_com_SOURCES=libusb_adk.c adk_com.c
 InitAccessoryMode_LDFULGS=-static-libgcc -static-libusb-1.0

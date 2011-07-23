@@ -19,6 +19,8 @@
 
 #define ACCESSORY_PID 0x2D00
 #define ACCESSORY_PID_ALT 0x2D01
+#define ACCESSORY_ENDPOINT_IN 0x83
+#define ACCESSORY_ENDPOINT_OUT 0x03
 
 #define LEN 2
 
@@ -27,11 +29,38 @@ static void status(int code);
 static usb_dev_handle* handle;
 static char stop;
 static char success = 0;
-int open_accesory_dev(){
- if(open_accesory_dev_from_id(VID,PID) == 0){return 0;}
- if(open_accesory_dev_from_id(GOOGLE_VID,PID) == 0){return 0;}
+int open_accesory_dev()
+{
+	if(open_accesory_dev_from_id(VID,PID) == 0){return 0;}
+	if(open_accesory_dev_from_id(GOOGLE_VID,PID) == 0){return 0;}
 	return -1;
 }
+
+int open_accesory_com_dev()
+{
+	if(open_accesory_dev_from_id(GOOGLE_VID,ACCESSORY_PID)){return 0;}
+	if(open_accesory_dev_from_id(GOOGLE_VID,ACCESSORY_PID_ALT)){return 0;}
+	return -1;
+}
+
+int data_read()
+{
+	unsigned char buffer[500000];
+	int response = 0,i;
+	static int transferred;
+
+	response = usb_bulk_read(handle,ACCESSORY_ENDPOINT_IN,buffer,16384,100);
+	if(response < 0){error(response);return -1;}
+	for(i=0;i<16384;i++){
+		printf("%c",buffer[i]);
+	}
+	printf("%s",buffer);
+
+	response = usb_bulk_write(handle,ACCESSORY_ENDPOINT_IN,buffer,500000,100);
+	if(response < 0){error(response);return -1;}
+
+}
+
 
 int open_accesory_dev_from_id(int vid,int pid)
 {

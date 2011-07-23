@@ -32,8 +32,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-bin_PROGRAMS = init_accessory_mode$(EXEEXT) \
-	accessory_data_com$(EXEEXT) lsusb$(EXEEXT)
+bin_PROGRAMS = adk_init$(EXEEXT) adk_com$(EXEEXT) lsusb$(EXEEXT)
 subdir = .
 DIST_COMMON = README $(am__configure_deps) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/config.h.in \
@@ -51,14 +50,12 @@ CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
 am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
-am_accessory_data_com_OBJECTS = libusb_adk.$(OBJEXT) \
-	init_accessory_mode.$(OBJEXT)
-accessory_data_com_OBJECTS = $(am_accessory_data_com_OBJECTS)
-accessory_data_com_LDADD = $(LDADD)
-am_init_accessory_mode_OBJECTS = libusb_adk.$(OBJEXT) \
-	init_accessory_mode.$(OBJEXT)
-init_accessory_mode_OBJECTS = $(am_init_accessory_mode_OBJECTS)
-init_accessory_mode_LDADD = $(LDADD)
+am_adk_com_OBJECTS = libusb_adk.$(OBJEXT) adk_com.$(OBJEXT)
+adk_com_OBJECTS = $(am_adk_com_OBJECTS)
+adk_com_LDADD = $(LDADD)
+am_adk_init_OBJECTS = libusb_adk.$(OBJEXT) adk_init.$(OBJEXT)
+adk_init_OBJECTS = $(am_adk_init_OBJECTS)
+adk_init_LDADD = $(LDADD)
 am_lsusb_OBJECTS = lsusb.$(OBJEXT) libusb_adk.$(OBJEXT)
 lsusb_OBJECTS = $(am_lsusb_OBJECTS)
 lsusb_LDADD = $(LDADD)
@@ -70,10 +67,8 @@ COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
-SOURCES = $(accessory_data_com_SOURCES) $(init_accessory_mode_SOURCES) \
-	$(lsusb_SOURCES)
-DIST_SOURCES = $(accessory_data_com_SOURCES) \
-	$(init_accessory_mode_SOURCES) $(lsusb_SOURCES)
+SOURCES = $(adk_com_SOURCES) $(adk_init_SOURCES) $(lsusb_SOURCES)
+DIST_SOURCES = $(adk_com_SOURCES) $(adk_init_SOURCES) $(lsusb_SOURCES)
 ETAGS = etags
 CTAGS = ctags
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
@@ -181,10 +176,10 @@ top_srcdir = @top_srcdir@
 #libtest_LIBRARIES is libtest package define
 #libtest_a_SOURCES is libtest package source files
 #test_SOURCES= is test package sourcefiles
-init_accessory_mode_SOURCES = libusb_adk.c init_accessory_mode.c
+adk_init_SOURCES = libusb_adk.c adk_init.c
 lsusb_SOURCES = lsusb.c libusb_adk.c libusb_adk.h
 #nodist_lsusb_HEADERS=libusb_adk.h
-accessory_data_com_SOURCES = libusb_adk.c init_accessory_mode.c
+adk_com_SOURCES = libusb_adk.c adk_com.c
 InitAccessoryMode_LDFULGS = -static-libgcc -static-libusb-1.0
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -279,12 +274,12 @@ uninstall-binPROGRAMS:
 
 clean-binPROGRAMS:
 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
-accessory_data_com$(EXEEXT): $(accessory_data_com_OBJECTS) $(accessory_data_com_DEPENDENCIES) 
-	@rm -f accessory_data_com$(EXEEXT)
-	$(LINK) $(accessory_data_com_OBJECTS) $(accessory_data_com_LDADD) $(LIBS)
-init_accessory_mode$(EXEEXT): $(init_accessory_mode_OBJECTS) $(init_accessory_mode_DEPENDENCIES) 
-	@rm -f init_accessory_mode$(EXEEXT)
-	$(LINK) $(init_accessory_mode_OBJECTS) $(init_accessory_mode_LDADD) $(LIBS)
+adk_com$(EXEEXT): $(adk_com_OBJECTS) $(adk_com_DEPENDENCIES) 
+	@rm -f adk_com$(EXEEXT)
+	$(LINK) $(adk_com_OBJECTS) $(adk_com_LDADD) $(LIBS)
+adk_init$(EXEEXT): $(adk_init_OBJECTS) $(adk_init_DEPENDENCIES) 
+	@rm -f adk_init$(EXEEXT)
+	$(LINK) $(adk_init_OBJECTS) $(adk_init_LDADD) $(LIBS)
 lsusb$(EXEEXT): $(lsusb_OBJECTS) $(lsusb_DEPENDENCIES) 
 	@rm -f lsusb$(EXEEXT)
 	$(LINK) $(lsusb_OBJECTS) $(lsusb_LDADD) $(LIBS)
@@ -295,7 +290,8 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/init_accessory_mode.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/adk_com.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/adk_init.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libusb_adk.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lsusb.Po@am__quote@
 
